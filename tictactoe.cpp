@@ -3,7 +3,7 @@
 
 void show_board(char game_board[]);
 bool check_winner(char game_board[]);
-
+void game_over(char game_board[], bool turn);
 
 int main () {
     bool win = false;
@@ -17,24 +17,20 @@ int main () {
     while (win == false) {
         show_board(board);
 
-    //player choses where to put a mark
-    std::cout<<"Choose your position"<<std::endl;
-    std::cin>>position;
-    //inputs x or o based on player order and position availability
+        //player choses where to put a mark
+        std::cout<<"Choose your position"<<std::endl;
+        std::cin>>position;
+        //
+        //inputs x or o based on player order and position availability then reverses player order
         if (board[position-1] == '_') {
             first_players_turn ? board[position-1] = 'X' : board[position-1] = 'O';
-            //next players turn
             first_players_turn = !first_players_turn;
             }
         else {std::cout<<"position taken, chose another one"<<std::endl;}
-    //
-    win = check_winner(board);    
+        //
+        win = check_winner(board);    
     }
-    std::cout<<std::endl;
-    show_board(board);
-    std::cout<<std::endl;
-    std::cout<<"game over"<<std::endl;
-    std::cout<<(first_players_turn ? "O wins" : "x wins")<<std::endl;
+    game_over(board, first_players_turn);
 
     return 0;
 }
@@ -68,3 +64,11 @@ bool check_winner(char game_board[]) {
 return  false;
 
 };
+
+void game_over(char game_board[], bool turn) {
+    std::cout<<std::endl;
+    show_board(game_board);
+    std::cout<<std::endl;
+    std::cout<<"game over"<<std::endl;
+    std::cout<<(turn ? "O wins" : "x wins")<<std::endl;
+}
