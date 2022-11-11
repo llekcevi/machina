@@ -45,6 +45,7 @@ int main()
 }
 
 // F U N C T I O N S
+//draws the board with the all the moves made
 void showBoard(char game_board[6][7])
 {
     std::cout << "1 2 3 4 5 6 7" << std::endl;
@@ -53,7 +54,7 @@ void showBoard(char game_board[6][7])
         std::cout << game_board[i][0] << " " << game_board[i][1] << " " << game_board[i][2] << " " << game_board[i][3] << " " << game_board[i][4] << " " << game_board[i][5] << " " << game_board[i][6] << std::endl;
     }
 }
-
+//checks for 4 same chars in every column in sequence that are not inital '_'
 bool checkWinColumn(char game_board[6][7])
 {
     for (int i = 0; i < 6; i++)
@@ -73,7 +74,7 @@ bool checkWinColumn(char game_board[6][7])
     }
     return false;
 }
-
+//checks for 4 same chars in every row in sequence that are not inital '_'
 bool checkWinRow(char game_board[6][7])
 {
     for (int i = 0; i < 6; i++)
@@ -94,5 +95,3 @@ bool checkWinRow(char game_board[6][7])
     }
     return false;
 }
-
-//
