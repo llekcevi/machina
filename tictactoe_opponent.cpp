@@ -4,7 +4,8 @@
 void show_board(char game_board[]);
 bool check_winner(char game_board[]);
 void game_over(char game_board[], bool turn);
-void computers_turn(char game_board[]);
+void computers_turn(char game_board[], bool win);
+int random_number();
 
 int main()
 {
@@ -26,8 +27,8 @@ int main()
             if (board[position - 1] == '_')
             {
                 board[position - 1] = 'X';
-                players_turn = !players_turn;
                 win = check_winner(board);
+                players_turn = !players_turn;
             }
             else
             {
@@ -36,9 +37,8 @@ int main()
         }
         while (!players_turn)
         {
-            computers_turn(board);
+            computers_turn(board, win);
             players_turn = !players_turn;
-            win = check_winner(board);
         }
     }
     game_over(board, players_turn);
@@ -74,15 +74,22 @@ bool check_winner(char game_board[])
     return false;
 };
 
-void computers_turn(char game_board[])
+int random_number()
 {
+    return time(NULL);
+}
+
+void computers_turn(char game_board[], bool win)
+{
+
     while (true)
     {
-        int computer_choice = rand() % 10;
+        int computer_choice = random_number() % 10;
 
         if (game_board[computer_choice] == '_')
         {
             game_board[computer_choice] = '0';
+            win = check_winner(game_board);
             break;
         }
     }
