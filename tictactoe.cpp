@@ -41,16 +41,22 @@ bool CheckWinner(char gameBoard[])
     return false;
 };
 
-void GameOver(char gameBoard[], bool turn)
-{   
+void GameOver(char gameBoard[], bool turn, int numberOfTurns)
+{
     system("clear");
     std::cout << std::endl;
     ShowBoard(gameBoard);
     std::cout << std::endl;
     std::cout << "Game over" << std::endl;
-    std::cout << (turn ? "O wins" : "X wins") << std::endl;
+    if (numberOfTurns == 8)
+    {
+        std::cout << (turn ? "O wins" : "X wins") << std::endl;
+    }
+    else
+    {
+        std::cout << "Draw" << std::endl;
+    }
 }
-
 void InputMove(char board[], bool firstPlayersTurn)
 {
 
@@ -79,18 +85,20 @@ int main()
     bool win = false;
     bool first_players_turn = true;
     char board[9];
+    int turns = 0;
 
     InitializeBoard(board);
 
-    while (!win)
+    while (!win && turns < 9)
     {
         system("clear");
         ShowBoard(board);
         InputMove(board, first_players_turn);
         win = CheckWinner(board);
         first_players_turn = !first_players_turn;
+        turns = turns + 1;
     }
-    GameOver(board, first_players_turn);
+    GameOver(board, first_players_turn, turns);
 
     return 0;
 }
