@@ -1,67 +1,33 @@
 #include <iostream>
 #include <algorithm>
 
-void show_board(char game_board[]);
-bool check_winner(char game_board[]);
-void game_over(char game_board[], bool turn);
-void computers_turn(char game_board[], bool win);
-int random_number();
-
-int main()
+void InitializeBoard(char gameBoard[])
 {
-    bool win = false;
-    bool players_turn = true;
-    int position;
+    std::fill_n(gameBoard, 9, '_');
+}
 
-    char board[9];
-    std::fill_n(board, 9, '_');
-
-    while (win == false)
+void ShowBoard(char gameBoard[9])
+{
+    for (int i = 0; i < 9; i++)
     {
-        show_board(board);
-
-        while (players_turn)
+        std::cout << gameBoard[i] << ' ';
+        if (i % 3 == 2)
         {
-            std::cout << "Choose your position" << std::endl;
-            std::cin >> position;
-            if (board[position - 1] == '_')
-            {
-                board[position - 1] = 'X';
-                win = check_winner(board);
-                players_turn = !players_turn;
-            }
-            else
-            {
-                std::cout << "position taken, chose another one" << std::endl;
-            }
-        }
-        while (!players_turn)
-        {
-            computers_turn(board, win);
-            players_turn = !players_turn;
+            std::cout << std::endl;
         }
     }
-    game_over(board, players_turn);
-
-    return 0;
-}
-void show_board(char game_board[9])
-{
-    std::cout << game_board[0] << " " << game_board[1] << " " << game_board[2] << std::endl;
-    std::cout << game_board[3] << " " << game_board[4] << " " << game_board[5] << std::endl;
-    std::cout << game_board[6] << " " << game_board[7] << " " << game_board[8] << std::endl;
 }
 
-bool check_winner(char game_board[])
+bool CheckWinner(char gameBoard[])
 {
-    bool first_row = ((game_board[0] == game_board[1]) && (game_board[0] == game_board[2])) && (game_board[0] != '_');
-    bool second_row = ((game_board[3] == game_board[4]) && (game_board[3] == game_board[5])) && (game_board[3] != '_');
-    bool third_row = ((game_board[6] == game_board[7]) && (game_board[6] == game_board[8])) && (game_board[6] != '_');
-    bool first_column = ((game_board[0] == game_board[3]) && (game_board[0] == game_board[6])) && (game_board[0] != '_');
-    bool second_column = ((game_board[2] == game_board[4]) && (game_board[2] == game_board[7])) && (game_board[2] != '_');
-    bool third_column = ((game_board[3] == game_board[5]) && (game_board[3] == game_board[8])) && (game_board[3] != '_');
-    bool left_to_right_d = ((game_board[0] == game_board[4]) && (game_board[0] == game_board[8])) && (game_board[0] != '_');
-    bool right_to_left_d = ((game_board[3] == game_board[4]) && (game_board[3] == game_board[6])) && (game_board[3] != '_');
+    bool first_row = ((gameBoard[0] == gameBoard[1]) && (gameBoard[0] == gameBoard[2])) && (gameBoard[0] != '_');
+    bool second_row = ((gameBoard[3] == gameBoard[4]) && (gameBoard[3] == gameBoard[5])) && (gameBoard[3] != '_');
+    bool third_row = ((gameBoard[6] == gameBoard[7]) && (gameBoard[6] == gameBoard[8])) && (gameBoard[6] != '_');
+    bool first_column = ((gameBoard[0] == gameBoard[3]) && (gameBoard[0] == gameBoard[6])) && (gameBoard[0] != '_');
+    bool second_column = ((gameBoard[2] == gameBoard[4]) && (gameBoard[2] == gameBoard[7])) && (gameBoard[2] != '_');
+    bool third_column = ((gameBoard[3] == gameBoard[5]) && (gameBoard[3] == gameBoard[8])) && (gameBoard[3] != '_');
+    bool left_to_right_d = ((gameBoard[0] == gameBoard[4]) && (gameBoard[0] == gameBoard[8])) && (gameBoard[0] != '_');
+    bool right_to_left_d = ((gameBoard[3] == gameBoard[4]) && (gameBoard[3] == gameBoard[6])) && (gameBoard[3] != '_');
 
     if (
         ((first_row || second_row) || (third_row || first_column)) ||
@@ -74,32 +40,70 @@ bool check_winner(char game_board[])
     return false;
 };
 
-int random_number()
-{
-    return time(NULL);
-}
-
-void computers_turn(char game_board[], bool win)
+void InputComputer(char gameBoard[])
 {
 
     while (true)
     {
-        int computer_choice = random_number() % 10;
+        int computer_choice = int(time(NULL)) % 10;
 
-        if (game_board[computer_choice] == '_')
+        if (gameBoard[computer_choice] == '_')
         {
-            game_board[computer_choice] = '0';
-            win = check_winner(game_board);
+            gameBoard[computer_choice] = '0';
             break;
         }
     }
 }
 
-void game_over(char game_board[], bool turn)
+void InputMove(char board[], bool firstPlayersTurn)
 {
+    if (firstPlayersTurn)
+    {
+        int position;
+        std::cout << std::endl;
+        std::cout << "Choose your position" << std::endl;
+        std::cin >> position;
+        if (board[position - 1] == '_')
+        {
+            board[position - 1] = 'X';
+        }
+        else
+        {
+            std::cout << "position taken, chose another one" << std::endl;
+        }
+    }
+    else
+    {
+        InputComputer(board);
+    }
+}
+
+void GameOver(char gameBoard[], bool turn)
+{
+    system("clear");
     std::cout << std::endl;
-    show_board(game_board);
+    ShowBoard(gameBoard);
     std::cout << std::endl;
     std::cout << "game over" << std::endl;
-    std::cout << (turn ? "X wins" : "0 wins") << std::endl;
+    std::cout << (turn ? "Computer wins" : "Human wins") << std::endl;
+}
+
+int main()
+{
+    bool win = false;
+    bool humans_turn = true;
+    char board[9];
+    InitializeBoard(board);
+
+    while (!win)
+    {
+        system("clear");
+        ShowBoard(board);
+        InputMove(board, humans_turn);
+        win = CheckWinner(board);
+        humans_turn = !humans_turn;
+    }
+    GameOver(board, humans_turn);
+
+    return 0;
 }
