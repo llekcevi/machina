@@ -1,22 +1,22 @@
 #include <iostream>
 #include <algorithm>
 
-void InitializeBoard(char gameBoard[]) 
+void InitializeBoard(char gameBoard[])
 {
     std::fill_n(gameBoard, 9, '_');
-
 }
 
 void ShowBoard(char gameBoard[9])
 {
     for (int i = 0; i < 9; i++)
     {
-        std::cout << gameBoard[i]<<' ';
+        std::cout << gameBoard[i] << ' ';
         if (i % 3 == 2)
         {
             std::cout << std::endl;
         }
     }
+    std::cout << std::endl;
 }
 
 bool CheckWinner(char gameBoard[])
@@ -42,22 +42,28 @@ bool CheckWinner(char gameBoard[])
 };
 
 void GameOver(char gameBoard[], bool turn)
-{
+{   
+    system("clear");
     std::cout << std::endl;
     ShowBoard(gameBoard);
     std::cout << std::endl;
-    std::cout << "game over" << std::endl;
-    std::cout << (turn ? "O wins" : "x wins") << std::endl;
+    std::cout << "Game over" << std::endl;
+    std::cout << (turn ? "O wins" : "X wins") << std::endl;
 }
 
-void InputMove(char board[], bool firstPlayersTurn) 
-{   
-    
-    int position;// player choses where to put a mark
-    std::cout << "Choose your position" << std::endl;
+void InputMove(char board[], bool firstPlayersTurn)
+{
+
+    int position;
+    if (firstPlayersTurn)
+    {
+        std::cout << "X, choose your position" << std::endl;
+    }
+    else
+    {
+        std::cout << "O, choose your position" << std::endl;
+    }
     std::cin >> position;
-    //
-    // inputs x or o based on player order and position availability then reverses player order
     if (board[position - 1] == '_')
     {
         firstPlayersTurn ? board[position - 1] = 'X' : board[position - 1] = 'O';
@@ -68,22 +74,21 @@ void InputMove(char board[], bool firstPlayersTurn)
     }
 }
 
-
 int main()
 {
     bool win = false;
     bool first_players_turn = true;
-    int position;
     char board[9];
 
     InitializeBoard(board);
 
     while (!win)
     {
+        system("clear");
         ShowBoard(board);
         InputMove(board, first_players_turn);
-        first_players_turn = !first_players_turn;
         win = CheckWinner(board);
+        first_players_turn = !first_players_turn;
     }
     GameOver(board, first_players_turn);
 
