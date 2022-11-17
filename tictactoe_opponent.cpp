@@ -58,17 +58,21 @@ void InputMove(char board[], bool firstPlayersTurn, char emptySpace)
 {
     if (firstPlayersTurn)
     {
-        int position;
-        std::cout << std::endl;
-        std::cout << "Choose your position" << std::endl;
-        std::cin >> position;
-        if (board[position - 1] == emptySpace)
+        while (true)
         {
-            board[position - 1] = 'X';
-        }
-        else
-        {
-            std::cout << "position taken, chose another one" << std::endl;
+            int position;
+            std::cout << std::endl;
+            std::cout << "Choose your position" << std::endl;
+            std::cin >> position;
+            if (board[position - 1] == emptySpace)
+            {
+                board[position - 11] = 'X';
+                break;
+            }
+            else
+            {
+                std::cout << "position taken" << std::endl;
+            }
         }
     }
     else
@@ -87,11 +91,11 @@ void GameOver(char gameBoard[], bool turn, int numberOfTurns)
     std::cout << std::endl;
     if (numberOfTurns == 8)
     {
-        std::cout << (turn ? "Computer wins" : "Human wins") << std::endl;
+        std::cout << "Draw" << std::endl;
     }
     else
     {
-        std::cout << "Draw" << std::endl;
+        std::cout << (turn ? "Computer wins" : "Human wins") << std::endl;
     }
 }
 
