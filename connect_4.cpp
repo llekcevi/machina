@@ -2,7 +2,7 @@
 #include <algorithm>
 
 // F U N C T I O N S
-// draws the board with the all the moves made
+//-------------------
 void ShowBoard(char game_board[6][7])
 {
     std::cout << "1 2 3 4 5 6 7" << std::endl;
@@ -15,16 +15,31 @@ void ShowBoard(char game_board[6][7])
         std::cout << std::endl;
     }
 }
-// checks for 4 same chars in every column in sequence that are not inital '_'
+
+void InitializeBoard(char gameBoard[6][7], char emptySpace)
+{
+    for (int i = 0; i < 6; i++)
+    {
+        memset(gameBoard[i], emptySpace, 7);
+    }
+}
+
+void EndGame(char gameBoard[6][7])
+{   
+    system("clear");
+    ShowBoard(gameBoard);
+    std::cout << "game over" << std::endl;
+}
+// WIN CONDITIONS
 bool CheckDiagonalDown(char gameBoard[6][7], char emptySpace)
 {
     for (int i = 3; i < 6; i++)
     {
-        for (int j = 0; j < 7; j++)
+        for (int j = 0; j < 4; j++)
         {
-            if ((gameBoard[i][j] == gameBoard[i-1][j+1]) &&
-                (gameBoard[i][j] == gameBoard[i-2][j+2]) &&
-                (gameBoard[i][j] == gameBoard[i-3][j+3]) &&
+            if ((gameBoard[i][j] == gameBoard[i - 1][j + 1]) &&
+                (gameBoard[i][j] == gameBoard[i - 2][j + 2]) &&
+                (gameBoard[i][j] == gameBoard[i - 3][j + 3]) &&
                 gameBoard[i][j] != emptySpace)
             {
                 return true;
@@ -35,6 +50,27 @@ bool CheckDiagonalDown(char gameBoard[6][7], char emptySpace)
     }
     return false;
 }
+
+bool CheckDiagonalUp(char gameBoard[6][7], char emptySpace)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            if ((gameBoard[i][j] == gameBoard[i + 1][j + 1]) &&
+                (gameBoard[i][j] == gameBoard[i + 2][j + 2]) &&
+                (gameBoard[i][j] == gameBoard[i + 3][j + 3]) &&
+                gameBoard[i][j] != emptySpace)
+            {
+                return true;
+            }
+            else
+                continue;
+        }
+    }
+    return false;
+}
+
 bool CheckColumn(char game_board[6][7], char emptySpace)
 {
     for (int i = 0; i < 3; i++)
@@ -54,8 +90,8 @@ bool CheckColumn(char game_board[6][7], char emptySpace)
     }
     return false;
 }
-// checks for 4 same chars in every row in sequence that are not inital '_'
-bool checkRow(char game_board[6][7], char emptySpace)
+
+bool CheckRow(char game_board[6][7], char emptySpace)
 {
     for (int i = 0; i < 6; i++)
     {
@@ -76,6 +112,7 @@ bool checkRow(char game_board[6][7], char emptySpace)
     return false;
 }
 //----------------------------------------------------------------------------
+
 // M A I N
 int main()
 {
@@ -84,17 +121,13 @@ int main()
     bool win = false;
     int chosen_column;
     char board[6][7];
-    // intializes array "board" to '_'
-    for (int i = 0; i < 6; i++)
-    {
-        memset(board[i], empty, 7);
-    }
-    //
+    InitializeBoard(board, empty);
+
     while (!win)
-    {
-        // prints out the board
+    {   
+        //dodati funkcije i petlju za ponovni upis ako je stupac pun
+        system("clear");
         ShowBoard(board);
-        //
         // player chooses a column to play
         first_players_turn ? std::cout << "X choose a column: " << std::endl : std::cout << "O chose a column" << std::endl;
         std::cin >> chosen_column;
@@ -110,9 +143,7 @@ int main()
         //
         first_players_turn = !first_players_turn;
         //
-        win = CheckColumn(board, empty) || checkRow(board, empty) || CheckDiagonalDown(board, empty);
+        win = CheckColumn(board, empty) || CheckRow(board, empty) || CheckDiagonalDown(board, empty) || CheckDiagonalUp(board, empty);
     }
-    ShowBoard(board);
-
-    std::cout << "game over" << std::endl;
+    EndGame(board);
 }
