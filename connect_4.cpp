@@ -3,7 +3,7 @@
 
 // F U N C T I O N S
 // draws the board with the all the moves made
-void showBoard(char game_board[6][7])
+void ShowBoard(char game_board[6][7])
 {
     std::cout << "1 2 3 4 5 6 7" << std::endl;
     for (int i = 5; i >= 0; i--)
@@ -16,7 +16,26 @@ void showBoard(char game_board[6][7])
     }
 }
 // checks for 4 same chars in every column in sequence that are not inital '_'
-bool checkColumn(char game_board[6][7], char emptySpace)
+bool CheckDiagonalDown(char gameBoard[6][7], char emptySpace)
+{
+    for (int i = 3; i < 6; i++)
+    {
+        for (int j = 0; j < 7; j++)
+        {
+            if ((gameBoard[i][j] == gameBoard[i-1][j+1]) &&
+                (gameBoard[i][j] == gameBoard[i-2][j+2]) &&
+                (gameBoard[i][j] == gameBoard[i-3][j+3]) &&
+                gameBoard[i][j] != emptySpace)
+            {
+                return true;
+            }
+            else
+                continue;
+        }
+    }
+    return false;
+}
+bool CheckColumn(char game_board[6][7], char emptySpace)
 {
     for (int i = 0; i < 3; i++)
     {
@@ -25,7 +44,7 @@ bool checkColumn(char game_board[6][7], char emptySpace)
             if ((game_board[i][j] == game_board[i + 1][j]) &&
                 (game_board[i][j] == game_board[i + 2][j]) &&
                 (game_board[i][j] == game_board[i + 3][j]) &&
-                game_board[i + 2][j] != emptySpace)
+                game_board[i][j] != emptySpace)
             {
                 return true;
             }
@@ -74,7 +93,7 @@ int main()
     while (!win)
     {
         // prints out the board
-        showBoard(board);
+        ShowBoard(board);
         //
         // player chooses a column to play
         first_players_turn ? std::cout << "X choose a column: " << std::endl : std::cout << "O chose a column" << std::endl;
@@ -91,9 +110,9 @@ int main()
         //
         first_players_turn = !first_players_turn;
         //
-        win = checkColumn(board, empty) || checkRow(board, empty);
+        win = CheckColumn(board, empty) || checkRow(board, empty) || CheckDiagonalDown(board, empty);
     }
-    showBoard(board);
+    ShowBoard(board);
 
     std::cout << "game over" << std::endl;
 }
