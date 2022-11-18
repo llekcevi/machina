@@ -42,16 +42,15 @@ bool CheckWinner(char gameBoard[], char emptySpace)
 void InputComputer(char gameBoard[], char emptySpace)
 {
 
-    while (true)
-    {
+
         int computer_choice = int(time(NULL)) % 10;
 
         if (gameBoard[computer_choice] == emptySpace)
         {
             gameBoard[computer_choice] = '0';
-            break;
+            //<break;
         }
-    }
+    
 }
 
 void InputHuman(char gameBoard[], char emptySpace)
@@ -64,7 +63,7 @@ void InputHuman(char gameBoard[], char emptySpace)
         std::cin >> position;
         if (gameBoard[position - 1] == emptySpace)
         {
-            gameBoard[position - 11] = 'X';
+            gameBoard[position - 1] = 'X';
             break;
         }
         else
