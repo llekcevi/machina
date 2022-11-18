@@ -50,34 +50,39 @@ void GameOver(char gameBoard[], bool turn, int numberOfTurns)
     std::cout << "Game over" << std::endl;
     if (numberOfTurns == 8)
     {
-        std::cout << (turn ? "O wins" : "X wins") << std::endl;
+        std::cout << "Draw" << std::endl;
     }
     else
     {
-        std::cout << "Draw" << std::endl;
+        std::cout << (turn ? "O wins" : "X wins") << std::endl;
     }
 }
 
 void InputMove(char board[], bool firstPlayersTurn, char emptySpace)
 {
+    while (true)
+    {
+        int position;
+        std::cout << std::endl;
+        if (firstPlayersTurn)
+        {
+            std::cout << "X, choose your position" << std::endl;
+        }
+        else
+        {
+            std::cout << "O, choose your position" << std::endl;
+        }
+        std::cin >> position;
 
-    int position;
-    if (firstPlayersTurn)
-    {
-        std::cout << "X, choose your position" << std::endl;
-    }
-    else
-    {
-        std::cout << "O, choose your position" << std::endl;
-    }
-    std::cin >> position;
-    if (board[position - 1] == emptySpace)
-    {
-        firstPlayersTurn ? board[position - 1] = 'X' : board[position - 1] = 'O';
-    }
-    else
-    {
-        std::cout << "position taken, chose another one" << std::endl;
+        if (board[position - 1] == emptySpace)
+        {
+            firstPlayersTurn ? board[position - 1] = 'X' : board[position - 1] = 'O';
+            break;
+        }
+        else
+        {
+            std::cout << "position taken" << std::endl;
+        }
     }
 }
 
