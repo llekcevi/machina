@@ -54,31 +54,29 @@ void InputComputer(char gameBoard[], char emptySpace)
     }
 }
 
-void InputMove(char board[], bool firstPlayersTurn, char emptySpace)
+void InputHuman(char gameBoard[], char emptySpace)
 {
-    if (firstPlayersTurn)
+    while (true)
     {
-        while (true)
+        int position;
+        std::cout << std::endl;
+        std::cout << "Choose your position" << std::endl;
+        std::cin >> position;
+        if (gameBoard[position - 1] == emptySpace)
         {
-            int position;
-            std::cout << std::endl;
-            std::cout << "Choose your position" << std::endl;
-            std::cin >> position;
-            if (board[position - 1] == emptySpace)
-            {
-                board[position - 11] = 'X';
-                break;
-            }
-            else
-            {
-                std::cout << "position taken" << std::endl;
-            }
+            gameBoard[position - 11] = 'X';
+            break;
+        }
+        else
+        {
+            std::cout << "position taken" << std::endl;
         }
     }
-    else
-    {
-        InputComputer(board, emptySpace);
-    }
+}
+
+void InputMove(char board[], bool firstPlayersTurn, char emptySpace)
+{
+    firstPlayersTurn? InputHuman(board, emptySpace): InputComputer(board, emptySpace);
 }
 
 void GameOver(char gameBoard[], bool turn, int numberOfTurns)
