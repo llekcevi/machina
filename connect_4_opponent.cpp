@@ -53,7 +53,8 @@ void InputComputer(char gameBoard[6][7], char emptySpace)
                 gameBoard[i][computer_choice] = '0';
                 break;
             }
-        }}
+        } break;
+        }
     
 }
 
