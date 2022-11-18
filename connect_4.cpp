@@ -1,8 +1,17 @@
 #include <iostream>
 #include <algorithm>
 
+//------------------
 // F U N C T I O N S
-//-------------------
+//------------------
+void InitializeBoard(char gameBoard[6][7], char emptySpace)
+{
+    for (int i = 0; i < 6; i++)
+    {
+        memset(gameBoard[i], emptySpace, 7);
+    }
+}
+
 void ShowBoard(char game_board[6][7])
 {
     std::cout << "1 2 3 4 5 6 7" << std::endl;
@@ -16,21 +25,32 @@ void ShowBoard(char game_board[6][7])
     }
 }
 
-void InitializeBoard(char gameBoard[6][7], char emptySpace)
+void InputMove(char gameBoard[6][7], char emptySpace, bool firstPlayersTurn)
 {
-    for (int i = 0; i < 6; i++)
+    int chosen_column;
+
+    firstPlayersTurn ? std::cout << "X choose a column: " << std::endl : std::cout << "O chose a column" << std::endl;
+    std::cin >> chosen_column;
+
+    for (int i = 0; i < 7; i++)
     {
-        memset(gameBoard[i], emptySpace, 7);
+        if (gameBoard[i][chosen_column - 1] == emptySpace)
+        {
+            firstPlayersTurn ? gameBoard[i][chosen_column - 1] = 'X' : gameBoard[i][chosen_column - 1] = 'O';
+            break;
+        };
     }
 }
 
 void EndGame(char gameBoard[6][7])
-{   
+{
     system("clear");
     ShowBoard(gameBoard);
     std::cout << "game over" << std::endl;
 }
+//---------------
 // WIN CONDITIONS
+//---------------
 bool CheckDiagonalDown(char gameBoard[6][7], char emptySpace)
 {
     for (int i = 3; i < 6; i++)
@@ -111,7 +131,7 @@ bool CheckRow(char game_board[6][7], char emptySpace)
     }
     return false;
 }
-//----------------------------------------------------------------------------
+//---------------
 
 // M A I N
 int main()
@@ -119,31 +139,16 @@ int main()
     char empty = '_';
     bool first_players_turn = true;
     bool win = false;
-    int chosen_column;
     char board[6][7];
     InitializeBoard(board, empty);
 
     while (!win)
-    {   
-        //dodati funkcije i petlju za ponovni upis ako je stupac pun
+    {
         system("clear");
         ShowBoard(board);
-        // player chooses a column to play
-        first_players_turn ? std::cout << "X choose a column: " << std::endl : std::cout << "O chose a column" << std::endl;
-        std::cin >> chosen_column;
-        // prints players mark on the bottom of selected column
-        for (int i = 0; i < 7; i++)
-        {
-            if (board[i][chosen_column - 1] == empty)
-            {
-                first_players_turn ? board[i][chosen_column - 1] = 'X' : board[i][chosen_column - 1] = 'O';
-                break;
-            };
-        }
-        //
-        first_players_turn = !first_players_turn;
-        //
+        InputMove(board, empty, first_players_turn);
         win = CheckColumn(board, empty) || CheckRow(board, empty) || CheckDiagonalDown(board, empty) || CheckDiagonalUp(board, empty);
+        first_players_turn = !first_players_turn;
     }
     EndGame(board);
 }
