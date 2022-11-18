@@ -42,13 +42,15 @@ bool CheckWinner(char gameBoard[], char emptySpace)
 void InputComputer(char gameBoard[], char emptySpace)
 {
 
-
+        while(true)
+        {
         int computer_choice = int(time(NULL)) % 10;
 
         if (gameBoard[computer_choice] == emptySpace)
         {
             gameBoard[computer_choice] = '0';
-            //<break;
+            break;
+        }
         }
     
 }
