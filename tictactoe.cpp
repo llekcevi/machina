@@ -1,47 +1,30 @@
 #include <iostream>
 #include <algorithm>
-
-void InitializeBoard(char gameBoard[], char emptySpace)
+// TIC TAC TOE
+//------------------
+// F U N C T I O N S
+//------------------
+void InitializeBoard(char gameBoard[3][3], char emptySpace)
 {
-    std::fill_n(gameBoard, 9, emptySpace);
+    for (int i = 0; i < 3; i++)
+    {
+        memset(gameBoard[i], emptySpace, 3);
+    }
 }
 
-void ShowBoard(char gameBoard[9])
+void ShowBoard(char gameBoard[3][3])
 {
-    for (int i = 0; i < 9; i++)
+    for (int i = 0; i < 3; i++)
     {
-        std::cout << gameBoard[i] << ' ';
-        if (i % 3 == 2)
+        for (int j = 0; j < 3; j++)
         {
-            std::cout << std::endl;
+            std::cout << gameBoard[i][j] << " ";
         }
+        std::cout << std::endl;
     }
-    std::cout << std::endl;
 }
 
-bool CheckWinner(char gameBoard[], char emptySpace)
-{
-    bool first_row = ((gameBoard[0] == gameBoard[1]) && (gameBoard[0] == gameBoard[2])) && (gameBoard[0] != emptySpace);
-    bool second_row = ((gameBoard[3] == gameBoard[4]) && (gameBoard[3] == gameBoard[5])) && (gameBoard[3] != emptySpace);
-    bool third_row = ((gameBoard[6] == gameBoard[7]) && (gameBoard[6] == gameBoard[8])) && (gameBoard[6] != emptySpace);
-    bool first_column = ((gameBoard[0] == gameBoard[3]) && (gameBoard[0] == gameBoard[6])) && (gameBoard[0] != emptySpace);
-    bool second_column = ((gameBoard[2] == gameBoard[4]) && (gameBoard[2] == gameBoard[7])) && (gameBoard[2] != emptySpace);
-    bool third_column = ((gameBoard[3] == gameBoard[5]) && (gameBoard[3] == gameBoard[8])) && (gameBoard[3] != emptySpace);
-    bool left_to_right_d = ((gameBoard[0] == gameBoard[4]) && (gameBoard[0] == gameBoard[8])) && (gameBoard[0] != emptySpace);
-    bool right_to_left_d = ((gameBoard[3] == gameBoard[4]) && (gameBoard[3] == gameBoard[6])) && (gameBoard[3] != emptySpace);
-
-    if (
-        ((first_row || second_row) || (third_row || first_column)) ||
-        ((second_column || third_column) || (left_to_right_d || right_to_left_d)))
-
-    {
-        return true;
-    }
-
-    return false;
-};
-
-void GameOver(char gameBoard[], bool turn, int numberOfTurns)
+void GameOver(char gameBoard[3][3], bool turn, int numberOfTurns)
 {
     system("clear");
     std::cout << std::endl;
@@ -58,7 +41,7 @@ void GameOver(char gameBoard[], bool turn, int numberOfTurns)
     }
 }
 
-void InputMove(char board[], bool firstPlayersTurn, char emptySpace)
+void InputMove(char board[3][3], bool firstPlayersTurn, char emptySpace)
 {
     while (true)
     {
@@ -73,10 +56,9 @@ void InputMove(char board[], bool firstPlayersTurn, char emptySpace)
             std::cout << "O, choose your position" << std::endl;
         }
         std::cin >> position;
-
-        if (board[position - 1] == emptySpace)
+        if (board[(position - 1) / 3][(position - 1) % 3] == emptySpace)
         {
-            firstPlayersTurn ? board[position - 1] = 'X' : board[position - 1] = 'O';
+            firstPlayersTurn ? board[(position - 1) / 3][(position - 1) % 3] = 'X' : board[(position - 1) / 3][(position - 1) % 3] = 'O';
             break;
         }
         else
@@ -86,11 +68,72 @@ void InputMove(char board[], bool firstPlayersTurn, char emptySpace)
     }
 }
 
+
+//---------------
+// WIN CONDITIONS
+//---------------
+bool CheckRow(char gameBoard[3][3], char emptySpace)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        if ((gameBoard[i][0] == gameBoard[i][1]) &&
+            (gameBoard[i][0] == gameBoard[i][2]) && (gameBoard[i][0] != emptySpace))
+        {
+            return true;
+        }
+        else
+            continue;
+    }
+    return false;
+}
+
+bool CheckColumn(char gameBoard[3][3], char emptySpace)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        if (gameBoard[0][i] == gameBoard[1][i] &&
+            gameBoard[0][i] == gameBoard[2][i] && gameBoard[0][i] != emptySpace)
+        {
+            return true;
+        }
+        else
+            continue;
+    }
+    return false;
+}
+
+bool CheckDiagonalUp(char gameBoard[3][3], char emptySpace)
+{
+    if (gameBoard[2][0] == gameBoard[1][1] &&
+        gameBoard[2][0] == gameBoard[0][1] &&
+        gameBoard[2][0] != emptySpace)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool CheckDiagonalDown(char gameBoard[3][3], char emptySpace)
+{
+    if (gameBoard[0][0] == gameBoard[1][1] &&
+        gameBoard[0][0] == gameBoard[2][2] &&
+        gameBoard[0][0] != emptySpace)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool CheckWinner(char gameBoard[3][3], char emptySpace)
+{
+    return CheckColumn(gameBoard, emptySpace) || CheckRow(gameBoard, emptySpace) || CheckDiagonalDown(gameBoard, emptySpace) || CheckDiagonalUp(gameBoard, emptySpace);
+}
+
 int main()
 {
     bool win = false;
     bool first_players_turn = true;
-    char board[9];
+    char board[3][3];
     int turns = 0;
     char empty = '_';
 
@@ -98,7 +141,7 @@ int main()
 
     while (!win && turns < 9)
     {
-        system("clear");
+        //system("clear");
         ShowBoard(board);
         InputMove(board, first_players_turn, empty);
         win = CheckWinner(board, empty);
