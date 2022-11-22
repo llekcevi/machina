@@ -41,18 +41,16 @@ bool CheckWinner(char gameBoard[], char emptySpace)
 
 void InputComputer(char gameBoard[], char emptySpace)
 {
-
-        while(true)
-        {
-        int computer_choice = int(time(NULL)) % 10;
+    while (true)
+    {
+        int computer_choice = rand() % 10;
 
         if (gameBoard[computer_choice] == emptySpace)
         {
             gameBoard[computer_choice] = '0';
             break;
         }
-        }
-    
+    }
 }
 
 void InputHuman(char gameBoard[], char emptySpace)
@@ -77,7 +75,7 @@ void InputHuman(char gameBoard[], char emptySpace)
 
 void InputMove(char board[], bool firstPlayersTurn, char emptySpace)
 {
-    firstPlayersTurn? InputHuman(board, emptySpace): InputComputer(board, emptySpace);
+    firstPlayersTurn ? InputHuman(board, emptySpace) : InputComputer(board, emptySpace);
 }
 
 void GameOver(char gameBoard[], bool turn, int numberOfTurns)
@@ -100,6 +98,7 @@ void GameOver(char gameBoard[], bool turn, int numberOfTurns)
 
 int main()
 {
+    srand(time(NULL));
     bool win = false;
     bool humans_turn = true;
     char board[9];
