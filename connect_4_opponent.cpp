@@ -45,8 +45,8 @@ void InputHuman(char gameBoard[6][7], char emptySpace)
 void InputComputer(char gameBoard[6][7], char emptySpace)
 {
     while (true)
-    {
-        int computer_choice = int(time(NULL) % 7);
+    {   
+        int computer_choice = rand()%7;
 
         for (int i = 0; i < 7; i++)
         {
@@ -157,7 +157,8 @@ bool CheckRow(char game_board[6][7], char emptySpace)
 
 // M A I N
 int main()
-{
+{   
+    srand(time(NULL));
     char empty = '_';
     bool first_players_turn = true;
     bool win = false;
