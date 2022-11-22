@@ -29,7 +29,7 @@ void InputHuman(char gameBoard[6][7], char emptySpace)
 {
     int chosen_column;
 
-    std::cout << "Human, choose a column: " << std::endl; 
+    std::cout << "Human, choose a column: " << std::endl;
     std::cin >> chosen_column;
 
     for (int i = 0; i < 7; i++)
@@ -44,23 +44,25 @@ void InputHuman(char gameBoard[6][7], char emptySpace)
 
 void InputComputer(char gameBoard[6][7], char emptySpace)
 {
-        while (true){int computer_choice = int(time(NULL) % 7);
+    while (true)
+    {
+        int computer_choice = int(time(NULL) % 7);
 
         for (int i = 0; i < 7; i++)
         {
             if (gameBoard[i][computer_choice] == emptySpace)
-            {   
+            {
                 gameBoard[i][computer_choice] = '0';
                 break;
             }
-        } break;
         }
-    
+        break;
+    }
 }
 
 void InputMove(char gameBoard[6][7], char emptySpace, bool firstPlayersTurn)
 {
-    firstPlayersTurn ? InputHuman(gameBoard, emptySpace): InputComputer(gameBoard, emptySpace);
+    firstPlayersTurn ? InputHuman(gameBoard, emptySpace) : InputComputer(gameBoard, emptySpace);
 }
 
 void EndGame(char gameBoard[6][7])
@@ -147,7 +149,6 @@ bool CheckRow(char game_board[6][7], char emptySpace)
             }
             else
                 continue;
-            ;
         }
     }
     return false;
