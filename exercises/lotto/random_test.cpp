@@ -37,6 +37,7 @@ int main()
     srand(time(NULL));
 
     int random_array[1000000];
+    //ne treba array od milijun brojeva, dovoljno ih je samo generirati i u istom trenutku u counter_arrayu računati pojavnost
     int counter_array[42] = {0};
 
     DrawMillion(random_array);
