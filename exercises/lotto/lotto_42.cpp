@@ -19,8 +19,6 @@ void ChooseNumbers(int chosenNumbers[7])
     for (int i = 0; i < 7; i++)
     {
         bool valid_number = true;
-        // include do while loop
-        // dok broj nije valid treba vraćati stalno unos, a tek kad bude valid upisuje vrijednost na mjesto
         int number;
 
         do
