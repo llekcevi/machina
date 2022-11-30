@@ -5,9 +5,8 @@
 
 int main()
 {
-    srand(time(NULL));
     bool win = false;
-    bool humans_turn = true;
+    bool first_players_turn = true;
     char board[3][3];
     int turns = 0;
     char empty = '_';
@@ -16,14 +15,14 @@ int main()
 
     while (!win && turns < 9)
     {
-        system("clear");
+        //system("clear");
         ShowBoard(board);
-        InputMoveSingle(board, humans_turn, empty);
+        InputMoveMulti(board, first_players_turn, empty);
         win = CheckWinner(board, empty);
-        humans_turn = !humans_turn;
+        first_players_turn = !first_players_turn;
         turns = turns + 1;
     }
-    GameOver(board, humans_turn, turns);
+    GameOver(board, first_players_turn, turns);
 
     return 0;
 }
