@@ -1,0 +1,4 @@
+else
+        {
+            RandomInputComputer(gameBoard, emptySpace);
+        }
