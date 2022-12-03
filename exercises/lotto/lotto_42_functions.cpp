@@ -23,7 +23,8 @@ void ChooseNumbers(int chosenNumbers[7])
         {
             std::cout << "Input " << i + 1 << ". number (1 - 42)" << std::endl;
             std::cin >> number;
-            valid_number = !CheckForDuplicates(chosenNumbers, number);
+            valid_number = !CheckForDuplicates(chosenNumbers, number) &&
+                           ((number > 0) && (number < 43));
 
         } while (!valid_number);
         chosenNumbers[i] = number;
@@ -39,25 +40,23 @@ void GenerateRandomNumbers(int randomNumbers[7])
         int number;
 
         do
-        {   
-            number = rand()%42+1;
+        {
+            number = rand() % 42 + 1;
             valid_number = !CheckForDuplicates(randomNumbers, number);
 
         } while (!valid_number);
-        
+
         randomNumbers[i] = number;
     }
 }
 
-void ShowRandomNumbers(int randomNumbers[7]) 
+void ShowRandomNumbers(int randomNumbers[7])
 {
-        for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 7; i++)
     {
         std::cout << randomNumbers[i] << std::endl;
     }
     std::cout << "-----------------------" << std::endl;
-
-
 }
 
 void CheckWin(int randomNumbers[7], int chosenNumbers[7], int winNumberCounter)
