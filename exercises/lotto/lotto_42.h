@@ -6,4 +6,4 @@ void GenerateRandomNumbers(int randomNumbers[7]);
 
 void ShowRandomNumbers(int randomNumbers[7]);
 
-void CheckWin(int randomNumbers[7], int chosenNumbers[7], int winNumberCounter);
+void CheckMatchingNumbers(int randomNumbers[7], int chosenNumbers[7]);

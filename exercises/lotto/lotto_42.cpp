@@ -6,12 +6,12 @@ int main()
 {
     int random_numbers[7] = {};
     int chosen_numbers[7] = {};
-    int win_number_counter = 0;
     srand(time(0));
 
     GenerateRandomNumbers(random_numbers);
     ChooseNumbers(chosen_numbers);
+    system("clear");
     ShowRandomNumbers(random_numbers);
-    CheckWin(random_numbers, chosen_numbers, win_number_counter);
+    CheckMatchingNumbers(random_numbers, chosen_numbers);
     return 0;
 }

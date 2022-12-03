@@ -51,23 +51,26 @@ void GenerateRandomNumbers(int randomNumbers[7])
 }
 
 void ShowRandomNumbers(int randomNumbers[7])
-{
+{   std::cout<<"Lotto numbers: "<<std::endl;
     for (int i = 0; i < 7; i++)
     {
-        std::cout << randomNumbers[i] << std::endl;
+        std::cout << randomNumbers[i] << " ";
     }
-    std::cout << "-----------------------" << std::endl;
+    std::cout << " \n-----------------------" << std::endl;
 }
 
-void CheckWin(int randomNumbers[7], int chosenNumbers[7], int winNumberCounter)
+void CheckMatchingNumbers(int randomNumbers[7], int chosenNumbers[7])
 {
+    std::cout << "you have guessed: " << std::endl;
+
     for (int r = 0; r < 7; r++)
     {
         for (int c = 0; c < 7; c++)
         {
             if (randomNumbers[r] == chosenNumbers[c])
-                std::cout << "you have guessed: " << chosenNumbers[c] << std::endl;
-            winNumberCounter = winNumberCounter + 1;
+                std::cout << chosenNumbers[c];
         }
     }
+    std::cout << "\n-----------------------" << std::endl;
+    std::cout << std::endl;
 }
