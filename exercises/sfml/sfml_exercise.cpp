@@ -94,24 +94,24 @@ int main()
         // Activate the window for OpenGL rendering
         window.setActive();
 
-        if (isMovingBackwards && (ship_current_position_y < (window_height - ship_sprite_height)))
+        if (isMovingBackwards && ((ship_current_position_y - ship_sprite_height / 2) < (window_height - ship_sprite_height)))
         {
             ship_current_position_y += movement_speed;
             laser_current_position_y += movement_speed;
         }
-        else if (isMovingForwards && ship_current_position_y > 0)
+        else if (isMovingForwards && ship_current_position_y - ship_sprite_height / 2 > 0)
         {
             ship_current_position_y -= movement_speed;
             laser_current_position_y -= movement_speed;
         }
 
-        else if (isMovingLeft && ship_current_position_x > 0)
+        else if (isMovingLeft && (ship_current_position_x - ship_sprite_width / 2) > 0)
         {
             ship_current_position_x -= movement_speed;
             laser_current_position_x -= movement_speed;
         }
 
-        else if (isMovingRight && (ship_current_position_x < (window_width - ship_sprite_width)))
+        else if (isMovingRight && (ship_current_position_x - ship_sprite_width / 2 < (window_width - ship_sprite_width)))
         {
             ship_current_position_x += movement_speed;
             laser_current_position_x += movement_speed;
