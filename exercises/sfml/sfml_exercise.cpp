@@ -98,35 +98,83 @@ int main()
         {
             ship_current_position_y += movement_speed;
             laser_current_position_y += movement_speed;
+            if (isShooting)
+            {
+                laser_current_position_y -= 15;
+                //laser_current_position_x = ship_sprite.getPosition().x;
+
+                if (laser_current_position_y < 0)
+                {
+                    isShooting = false;
+                    laser_current_position_y = ship_sprite.getPosition().y;
+                    laser_current_position_x = ship_sprite.getPosition().x;
+                }
+            }
         }
         else if (isMovingForwards && ship_current_position_y - ship_sprite_height / 2 > 0)
         {
             ship_current_position_y -= movement_speed;
             laser_current_position_y -= movement_speed;
+            if (isShooting)
+            {
+                laser_current_position_y -= 15;
+                laser_current_position_x = ship_sprite.getPosition().x;
+
+                if (laser_current_position_y < 0)
+                {
+                    isShooting = false;
+                    laser_current_position_y = ship_sprite.getPosition().y;
+                    laser_current_position_x = ship_sprite.getPosition().x;
+                }
+            }
         }
 
         else if (isMovingLeft && (ship_current_position_x - ship_sprite_width / 2) > 0)
         {
             ship_current_position_x -= movement_speed;
             laser_current_position_x -= movement_speed;
+            if (isShooting)
+            {
+                laser_current_position_y -= 15;
+                laser_current_position_x += movement_speed;
+
+                if (laser_current_position_y < 0)
+                {
+                    isShooting = false;
+                    laser_current_position_y = ship_sprite.getPosition().y;
+                    laser_current_position_x = ship_sprite.getPosition().x;
+                }
+            }
         }
 
         else if (isMovingRight && (ship_current_position_x - ship_sprite_width / 2 < (window_width - ship_sprite_width)))
         {
             ship_current_position_x += movement_speed;
             laser_current_position_x += movement_speed;
-        }
-
-        else if (isShooting)
-        {
-            laser_current_position_y -= 15;
-            if (laser_current_position_y < 0)
+            if (isShooting)
             {
-                isShooting = false;
-                laser_current_position_y = ship_sprite.getPosition().y;
-                laser_current_position_x = ship_sprite.getPosition().x;
+                laser_current_position_y -= 15;
+                laser_current_position_x -= movement_speed;
+
+                if (laser_current_position_y < 0)
+                {
+                    isShooting = false;
+                    laser_current_position_y = ship_sprite.getPosition().y;
+                    laser_current_position_x = ship_sprite.getPosition().x;
+                }
             }
         }
+
+        else if(isShooting){
+                laser_current_position_y -= 15;
+
+                if (laser_current_position_y < 0)
+                {
+                    isShooting = false;
+                    laser_current_position_y = ship_sprite.getPosition().y;
+                    laser_current_position_x = ship_sprite.getPosition().x;
+                }
+            }
 
         ship_sprite.setPosition(ship_current_position_x, ship_current_position_y);
         laser_sprite.setPosition(laser_current_position_x, laser_current_position_y);
