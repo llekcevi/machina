@@ -9,49 +9,50 @@ TicTacToe::TicTacToe()
     humans_turn = true;
     turns = 0;
     empty = '_';
-    initializeBoard(board, empty);
+    initializeBoard();
 }
-//
+// - runs the game
 int TicTacToe::run()
 {
     srand(time(NULL));
 
-    playGame(win, board, humans_turn, empty, turns);
+    playGame();
 
-    endGame(board, turns);
+    endGame();
 
     return 0;
 }
 // PRIVATE
-void TicTacToe::playGame(bool win_condition, char gameBoard[3][3], bool human, char emptySpace, short int turn_counter)
+// - main game loop
+void TicTacToe::playGame()
 {
-    while (!win_condition && turn_counter < 9)
+    while (!win && turns < 9)
     {
-        showBoard(gameBoard);
-        inputMove(gameBoard, human, emptySpace);
-        win_condition = checkWinner(gameBoard, emptySpace);
-        human = !human;
-        turn_counter = turn_counter + 1;
+        showBoard();
+        inputMove();
+        win = checkWinner();
+        humans_turn = !humans_turn;
+        turns = turns + 1;
     }
 }
-
-void TicTacToe::endGame(char gameBoard[3][3], short int turn_counter)
+// - outputs result of the game at the end
+void TicTacToe::endGame()
 {
-    showBoard(gameBoard);
+    showBoard();
     std::cout << std::endl;
     std::cout << "Game over" << std::endl;
     std::cout << std::endl;
-    if (turn_counter == 8)
+    if (turns == 8)
     {
         std::cout << "Draw" << std::endl;
     }
     else
     {
-        std::cout << (turn_counter ? "Computer wins" : "Human wins") << std::endl;
+        std::cout << (turns % 2 == 0 ? "Computer wins" : "Human wins") << std::endl;
     }
 }
-
-void TicTacToe::showBoard(char gameBoard[3][3])
+// - draws the board
+void TicTacToe::showBoard()
 {
     system("clear");
 
@@ -59,18 +60,18 @@ void TicTacToe::showBoard(char gameBoard[3][3])
     {
         for (int j = 0; j < 3; j++)
         {
-            std::cout << gameBoard[i][j] << " ";
+            std::cout << board[i][j] << " ";
         }
         std::cout << std::endl;
     }
 }
-// INPUT FUNCTIONS
-void TicTacToe::inputMove(char gameBoard[3][3], bool human, char emptySpace)
+// - input functions
+void TicTacToe::inputMove()
 {
-    human ? inputHuman(gameBoard, emptySpace) : inputComputer(board, emptySpace);
+    humans_turn ? inputHuman() : inputComputer();
 }
 
-void TicTacToe::inputHuman(char gameBoard[3][3], char emptySpace)
+void TicTacToe::inputHuman()
 {
     while (true)
     {
@@ -78,9 +79,9 @@ void TicTacToe::inputHuman(char gameBoard[3][3], char emptySpace)
         std::cout << std::endl;
         std::cout << "Choose your position" << std::endl;
         std::cin >> position;
-        if (gameBoard[(position - 1) / 3][(position - 1) % 3] == emptySpace)
+        if (board[(position - 1) / 3][(position - 1) % 3] == empty)
         {
-            gameBoard[(position - 1) / 3][(position - 1) % 3] = 'X';
+            board[(position - 1) / 3][(position - 1) % 3] = 'X';
             break;
         }
         else
@@ -90,53 +91,53 @@ void TicTacToe::inputHuman(char gameBoard[3][3], char emptySpace)
     }
 }
 
-void TicTacToe::inputComputer(char gameBoard[3][3], char emptySpace)
+void TicTacToe::inputComputer()
 {
     while (true)
     {
         int computer_choice = rand() % 10;
 
-        if (gameBoard[(computer_choice - 1) / 3][(computer_choice - 1) % 3] == emptySpace)
+        if (board[(computer_choice - 1) / 3][(computer_choice - 1) % 3] == empty)
         {
-            gameBoard[(computer_choice - 1) / 3][(computer_choice - 1) % 3] = '0';
+            board[(computer_choice - 1) / 3][(computer_choice - 1) % 3] = '0';
             break;
         }
     }
 }
-// CHECK WIN FUNCTIONS
-bool TicTacToe::checkWinner(char gameBoard[3][3], char emptySpace)
+// check win functions
+bool TicTacToe::checkWinner()
 {
-    return checkColumn(gameBoard, emptySpace) || checkRow(gameBoard, emptySpace) || checkDiagonalDown(gameBoard, emptySpace) || checkDiagonalUp(gameBoard, emptySpace);
+    return checkColumn() || checkRow() || checkDiagonalDown() || checkDiagonalUp();
 }
 
-bool TicTacToe::checkDiagonalDown(char gameBoard[3][3], char emptySpace)
+bool TicTacToe::checkDiagonalDown()
 {
-    if (gameBoard[0][0] == gameBoard[1][1] &&
-        gameBoard[0][0] == gameBoard[2][2] &&
-        gameBoard[0][0] != emptySpace)
+    if (board[0][0] == board[1][1] &&
+        board[0][0] == board[2][2] &&
+        board[0][0] != empty)
     {
         return true;
     }
     return false;
 }
 
-bool TicTacToe::checkDiagonalUp(char gameBoard[3][3], char emptySpace)
+bool TicTacToe::checkDiagonalUp()
 {
-    if (gameBoard[2][0] == gameBoard[1][1] &&
-        gameBoard[2][0] == gameBoard[0][1] &&
-        gameBoard[2][0] != emptySpace)
+    if (board[2][0] == board[1][1] &&
+        board[2][0] == board[0][1] &&
+        board[2][0] != empty)
     {
         return true;
     }
     return false;
 }
 
-bool TicTacToe::checkColumn(char gameBoard[3][3], char emptySpace)
+bool TicTacToe::checkColumn()
 {
     for (int i = 0; i < 3; i++)
     {
-        if (gameBoard[0][i] == gameBoard[1][i] &&
-            gameBoard[0][i] == gameBoard[2][i] && gameBoard[0][i] != emptySpace)
+        if (board[0][i] == board[1][i] &&
+            board[0][i] == board[2][i] && board[0][i] != empty)
         {
             return true;
         }
@@ -146,12 +147,12 @@ bool TicTacToe::checkColumn(char gameBoard[3][3], char emptySpace)
     return false;
 }
 
-bool TicTacToe::checkRow(char gameBoard[3][3], char emptySpace)
+bool TicTacToe::checkRow()
 {
     for (int i = 0; i < 3; i++)
     {
-        if ((gameBoard[i][0] == gameBoard[i][1]) &&
-            (gameBoard[i][0] == gameBoard[i][2]) && (gameBoard[i][0] != emptySpace))
+        if ((board[i][0] == board[i][1]) &&
+            (board[i][0] == board[i][2]) && (board[i][0] != empty))
         {
             return true;
         }
@@ -161,10 +162,10 @@ bool TicTacToe::checkRow(char gameBoard[3][3], char emptySpace)
     return false;
 }
 
-void TicTacToe::initializeBoard(char gameBoard[3][3], char emptySpace)
+void TicTacToe::initializeBoard()
 {
     for (int i = 0; i < 3; i++)
     {
-        memset(gameBoard[i], emptySpace, 3);
+        memset(board[i], empty, 3);
     }
 }
