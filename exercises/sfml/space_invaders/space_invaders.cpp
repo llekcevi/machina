@@ -6,6 +6,7 @@
 
 class Ship
 {
+    //dodati funckiju za kretanje broda
 public:
     sf::Texture ship_tex;
     sf::Sprite ship_sprite;
@@ -19,7 +20,7 @@ public:
     int movement_speed;
 
 public:
-    Ship(sf::RenderWindow window);
+    Ship(int window_height, int window_width);
     ~Ship();
 };
 
@@ -46,7 +47,7 @@ main()
 
     // - ship
 
-    Ship ship(window)
+    Ship ship(window_height, window_width);
 ;
     // laser
     sf::Texture laser_tex;
@@ -155,15 +156,15 @@ main()
     return 0;
 }
 
-Ship::Ship(sf::RenderWindow window)
+Ship::Ship(int window_height, int window_width)
 {
     ship_tex.loadFromFile("/Users/llekcevic/Downloads/spaceArt/png/player.png");
     ship_sprite.setTexture(ship_tex);
     ship_sprite_height = ship_sprite.getLocalBounds().height;
     ship_sprite_width = ship_sprite.getGlobalBounds().width;
     ship_sprite.setOrigin(ship_sprite_width / 2.f, ship_sprite_height / 2.f);
-    ship_current_position_x = window.getSize().x / 2;
-    ship_current_position_y = window.getSize().y - ship_sprite_height / 2.f;
+    ship_current_position_x = window_width / 2;
+    ship_current_position_y = window_height - ship_sprite_height / 2.f;
     int movement_speed = 3;
 }
 
