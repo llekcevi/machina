@@ -16,7 +16,8 @@ int main()
     sf::RectangleShape rect;
     sf::Vector2f rect_position(100, 100);
     rect.setPosition(rect_position.x, rect_position.y);
-    rect.setSize(sf::Vector2f(100, 100));
+    sf::Vector2f rect_size = sf::Vector2f(100, 100);
+    rect.setSize(rect_size);
     sf::Color color = sf::Color::Green;
 
     while (window.isOpen())
