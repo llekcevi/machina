@@ -11,6 +11,7 @@ public:
     int laser_position_x;
     int laser_position_y;
     int laser_speed;
+    bool isShooting;
 
 private:
     sf::Texture m_laser_tex;
@@ -18,8 +19,10 @@ private:
     int m_laser_sprite_width;
 
 public:
-    Laser(int ship_x, int ship_y);
-    void shoot();
+    Laser();
+    void shoot(int ship_x, int ship_y);
+    void position(int ship_x, int ship_y);
+    void moveUp();
     ~Laser();
 };
 
@@ -44,7 +47,7 @@ public:
     void moveShip(sf::RenderWindow *window);
     void moveRight();
     void moveLeft();
-    void shoot();
+    // void shoot(int laser_y);
     ~Ship();
 };
 
@@ -67,7 +70,7 @@ int main()
     // - ship
 
     Ship ship(&window);
-
+    Laser laser;
     // laser
 
     // GAME ENGINE LOOP
@@ -98,7 +101,7 @@ int main()
                 }
                 else if (event.key.code == sf::Keyboard::Key::Space)
                 {
-                    ship.isShooting = true;
+                    laser.isShooting = true;
                 }
             }
             if (event.type == sf::Event::KeyReleased)
@@ -115,16 +118,17 @@ int main()
         }
         // Activate the window for OpenGL rendering
         window.setActive();
-        
+
         ship.moveShip(&window);
 
-        ship.shoot();
-   
+        laser.shoot(ship.ship_current_position_x, ship.ship_current_position_y);
+
+       // laser.laser_sprite.setPosition(laser.laser_position_x, laser.laser_position_y+50);
 
         // DRAW
         window.clear();
         window.draw(background_sprite);
-        //kako nacrtati laser?
+        window.draw(laser.laser_sprite);
         window.draw(ship.ship_sprite);
 
         // End the current frame and display its contents on screen
@@ -170,21 +174,21 @@ void Ship::moveLeft()
 {
     ship_current_position_x -= m_movement_speed;
 }
-void Ship::shoot()
+/* void Ship::shoot(int laser_y)
 {
     if (isShooting)
     {
         std::cout << "ship::shoot" << std::endl;
-        Laser laser (ship_current_position_x, ship_current_position_y);
-        laser.shoot();
-        laser.laser_sprite.setPosition(laser.laser_position_x, laser.laser_position_y);
-        isShooting = false;
+        laser_y -= m_movement_speed;
+         laser.laser_sprite.setPosition(laser.laser_position_x, laser.laser_position_y);
+        if (laser_y < 0)
+            isShooting = false;
     }
 }
-
+ */
 Ship::~Ship() {}
 
-Laser::Laser(int ship_x, int ship_y)
+Laser::Laser()
 {
     m_laser_tex.loadFromFile("/Users/llekcevic/Downloads/spaceArt/png/laserRed.png");
     laser_sprite.setTexture(m_laser_tex);
@@ -192,13 +196,39 @@ Laser::Laser(int ship_x, int ship_y)
     m_laser_sprite_width = laser_sprite.getLocalBounds().width;
     laser_sprite.setOrigin(m_laser_sprite_width / 2.f, m_laser_sprite_height / 2.f);
     laser_speed = 15;
-    laser_position_x = ship_x;
-    laser_position_y -= ship_y;
+    isShooting = false;
 }
 
-void Laser::shoot()
+void Laser::shoot(int ship_x, int ship_y)
 {
-    laser_position_y -= laser_speed;
+    position(ship_x, ship_y);
+    
+    if (isShooting)
+    {
+        std::cout << laser_position_y << std::endl;
+        std::cout << laser_position_x << std::endl;
+
+        std::cout << "laser::shoot" << std::endl;
+        moveUp();   
+    }
+}
+
+void Laser::position(int ship_x, int ship_y)
+{
+    laser_position_x = ship_x;
+    laser_position_y = ship_y;
+}
+
+void Laser::moveUp()
+{
+        while (laser_position_y > 15)
+        {
+        laser_position_y -= laser_speed;
+        std::cout <<"laser::moveUp before set position "<< laser_position_y << std::endl;
+            laser_sprite.setPosition(laser_position_x, laser_position_y);
+
+        }
+        isShooting = false;
 }
 
 Laser::~Laser()
