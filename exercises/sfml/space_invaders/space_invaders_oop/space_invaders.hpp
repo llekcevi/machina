@@ -2,6 +2,16 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 
+class LaserManager
+{
+    std::vector<sf::Sprite> projectiles;
+
+public:
+    void Update(sf::Time delta);
+    void spawnProjectile(sf::Vector2i position, sf::Vector2i speed);
+    bool hasProjectiles();
+    std::vector<sf::Sprite> getProjectiles();
+};
 
 class Laser
 {
@@ -27,10 +37,10 @@ public:
 
 class Ship
 {
+    LaserManager* laserManager; 
 public:
     sf::Sprite ship_sprite;
-    int ship_current_position_x;
-    int ship_current_position_y;
+    sf::Vector2i ship_position;
     bool isMovingRight;
     bool isMovingLeft;
     bool isShooting;
@@ -43,9 +53,10 @@ private:
 
 public:
     Ship(sf::RenderWindow *window);
+    void setLaserManager(LaserManager* lm);
     void moveShip(sf::RenderWindow *window);
     void moveRight();
     void moveLeft();
-    // void shoot(int laser_y);
+    void shoot();
     ~Ship();
 };

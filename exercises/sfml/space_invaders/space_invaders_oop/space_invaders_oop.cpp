@@ -4,6 +4,16 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "space_invaders.hpp"
+
+/* 
+RUN:
+
+g++ -std=c++11 space_invaders_oop.cpp space_invaders.hpp space_invaders_functions.cpp -I/opt/homebrew/Cellar/sfml/2.5.1_2/include 
+-L/opt/homebrew/Cellar/sfml/2.5.1_2/lib/ -lsfml-system -lsfml-window -lsfml-graphics      
+
+ */
+
+
 int main()
 {
     // Declare and create a new window

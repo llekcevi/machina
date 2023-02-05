@@ -4,6 +4,44 @@
 #include <iostream>
 #include "space_invaders.hpp"
 
+// --- LASER MANAGER ---
+void LaserManager::Update(sf::Time delta)
+{
+    // ???
+}
+
+void LaserManager::spawnProjectile(sf::Vector2i position, sf::Vector2i speed)
+{
+    sf::Texture laser_tex;
+    sf::Sprite laser_sprite;
+    laser_tex.loadFromFile("/Users/llekcevic/Downloads/spaceArt/png/laserRed.png");
+    laser_sprite.setTexture(laser_tex);
+
+    laser_sprite.setPosition(position);
+
+    projectiles.push_back(laser_sprite);
+}
+
+bool LaserManager::hasProjectiles()
+{
+    if (projectiles.empty())
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+std::vector<sf::Sprite> LaserManager::getProjectiles()
+{
+    return projectiles;
+}
+// ---
+
+// --- SHIP ---
+
 Ship::Ship(sf::RenderWindow *window)
 {
     m_ship_tex.loadFromFile("/Users/llekcevic/Downloads/spaceArt/png/player.png");
@@ -11,15 +49,21 @@ Ship::Ship(sf::RenderWindow *window)
     m_ship_sprite_height = ship_sprite.getLocalBounds().height;
     m_ship_sprite_width = ship_sprite.getGlobalBounds().width;
     ship_sprite.setOrigin(m_ship_sprite_width / 2.f, m_ship_sprite_height / 2.f);
-    ship_current_position_x = window->getSize().x / 2;
-    ship_current_position_y = window->getSize().y - m_ship_sprite_height / 2.f;
+    ship_position.x = window->getSize().x / 2;
+    ship_position.y = window->getSize().y - m_ship_sprite_height / 2.f;
     m_movement_speed = 3;
 }
 
+void Ship::setLaserManager(LaserManager *lm)
+{
+    this->laserManager = lm;
+}
+
+// --- SHIP - movement
 void Ship::moveShip(sf::RenderWindow *window)
 {
-    bool canMoveRight = (ship_current_position_x - m_ship_sprite_width / 2.f) < (window->getSize().x - m_ship_sprite_width);
-    bool canMoveLeft = (ship_current_position_x - m_ship_sprite_width / 2.f) > 0;
+    bool canMoveRight = (ship_position.x - m_ship_sprite_width / 2.f) < (window->getSize().x - m_ship_sprite_width);
+    bool canMoveLeft = (ship_position.x - m_ship_sprite_width / 2.f) > 0;
 
     if (isMovingRight && canMoveRight)
     {
@@ -29,31 +73,35 @@ void Ship::moveShip(sf::RenderWindow *window)
     {
         moveLeft();
     }
-    ship_sprite.setPosition(ship_current_position_x, ship_current_position_y);
+    ship_sprite.setPosition(ship_position.x, ship_position.y);
 }
 
 void Ship::moveRight()
 {
-    ship_current_position_x += m_movement_speed;
+    ship_position.x += m_movement_speed;
 }
 
 void Ship::moveLeft()
 {
-    ship_current_position_x -= m_movement_speed;
+    ship_position.x -= m_movement_speed;
 }
-/* void Ship::shoot(int laser_y)
+
+// --- SHIP - shooting
+void Ship::shoot()
 {
     if (isShooting)
-    {
-        std::cout << "ship::shoot" << std::endl;
-        laser_y -= m_movement_speed;
-         laser.laser_sprite.setPosition(laser.laser_position_x, laser.laser_position_y);
-        if (laser_y < 0)
-            isShooting = false;
-    }
+        if (laserManager != nullptr)
+        {
+            /* ... */
+            laserManager->spawnProjectile(ship_position);
+            /* ... */
+        }
 }
- */
+
 Ship::~Ship() {}
+// ---
+
+// --- LASER ---
 
 Laser::Laser()
 {
@@ -69,14 +117,14 @@ Laser::Laser()
 void Laser::shoot(int ship_x, int ship_y)
 {
     position(ship_x, ship_y);
-    
+
     if (isShooting)
     {
         std::cout << laser_position_y << std::endl;
         std::cout << laser_position_x << std::endl;
 
         std::cout << "laser::shoot" << std::endl;
-        moveUp();   
+        moveUp();
     }
 }
 
@@ -88,16 +136,16 @@ void Laser::position(int ship_x, int ship_y)
 
 void Laser::moveUp()
 {
-        while (laser_position_y > 15)
-        {
+    while (laser_position_y > 15)
+    {
         laser_position_y -= laser_speed;
-        std::cout <<"laser::moveUp before set position "<< laser_position_y << std::endl;
-            laser_sprite.setPosition(laser_position_x, laser_position_y);
-
-        }
-        isShooting = false;
+        std::cout << "laser::moveUp before set position " << laser_position_y << std::endl;
+        laser_sprite.setPosition(laser_position_x, laser_position_y);
+    }
+    isShooting = false;
 }
 
 Laser::~Laser()
 {
 }
+// ---
