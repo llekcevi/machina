@@ -9,3 +9,9 @@ exercises/sfml/space_invaders/prog
 notes/12
 exercises/sfml/asteroids/asteroids
 exercises/sfml/space_invaders/space_invaders_oop/prog
+exercises/sfml/space_invaders/space_invaders_oop/a.out
+.gitignore
+exercises/sfml/space_invaders/space_invaders_oop/space_invaders.hpp.gch
+notes/14
+exercises/sfml/space_invaders/space_invaders_oop/run.txt
+notes/15
